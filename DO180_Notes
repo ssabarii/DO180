@@ -1,42 +1,25 @@
 
   Welcome to DO180
 	Red Hat OpenShift I: Containers & Kubernetes  			EX180	OCP 4.6
+	
+	
+	
+Navdeep
 
-	Navdeep
-	Nav	#deep
-	Reading UK
-	
-	
+Nav 	#Deep
+
+Reading UK
+
+
 Name
-Company if possible	RIVM
-Experience Linux(RHCSA EX200), Containers(Kubernetes,docker/podman,openshift)  
-cp mkdir rm TAB-TAB ssh vim cd 
 Expectation
-City/Timezone
-Hobbies/Interesting
+Experience  Docker,podman, openshift,kuberneters , Linux ( ssh cd mv rm mkdir vim(V.IMP) )
+Hobbies
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Linux Delegates:
+Floor, Birgit, Eddo, Sjuul
 
 
 
@@ -84,6 +67,34 @@ podman is default RHEL 7.6
 
 Chapter 1:
 
+
+		Traditional Machine				Container
+Hardware	Physical/Virtual				Container
+Software	OS, PHP,MYSQL, Compile/deploy app		Image(OS Lib, PHP,MYSQL, Compiled app) [Registry]	
+	
+Container is provided by  Podman, Docker, LXC
+Image is developed by developer and pushed to Registry
+Registry/Central Repository
+1. Public: docker.io, quay.io
+2. Subscription: registry.redhat.io
+3. Private/Org: Internal Registry
+
+Benefits of Containers:
+1. Require far fewer hardware resources 
+2. quick to start
+3. Less Storage Space
+
+When to use containers:
+1. software application with all of its dependent services (databases, messaging, httpd)
+2. Persistence by using methods
+3. Security is same as traditional
+4. Microservice	
+
+When NOT to use containers:
+1. E.g. App is to measure H/w CPU cycles, File system usage/Disk, I/O cycles 
+2. Performance
+
+
 	OCP3.x			OCP4.x
 	docker			podman
 	getting heavier		lightweight container platform
@@ -125,7 +136,11 @@ Cigna provides Health services
 11Pm-5AM less 
 
 
-
+	Chapter 2:
+	
+run Containers as Root User:	CNI(Container Network Interface) used and provide IP to Container 
+run Containers as Normal User: 	CNI(Container Network Interface) can not be used, so NO IP Provided to Container, 
+				Port Forward COntainer to HOST 
 
 OCI-CRI
 CRIO
@@ -136,6 +151,14 @@ sudo podman run --name mysql-basic -e MYSQL_USER=user1 -e MYSQL_PASSWORD=mypa55 
 CREATE TABLE Projects (id int(11) NOT NULL,name varchar(255) DEFAULT NULL,code varchar(255) DEFAULT NULL,PRIMARY KEY (id));
 
 
+root and rootless Containers:
+
+Host(Workstation)	sudo(root)				student	
+Containers(image)	root					root/normal user
+	
+Images:
+docker.io/quay.io	Images want to run as root (Bad for security)	
+Redhat Images		Images normally run as NON root (Good for security)
 
 
 Chapter 3:
@@ -173,7 +196,7 @@ Save Container as Image:
 	podman exec -it me /bin/bash
 	podman diff me
 
-3. Save Container as Image and Test
+3. Save Container as New Image and Test
 
 	podman stop me
 	podman commit -a "Author_name"  me Image_name     //-m "Meaningful_Message" only for docker
@@ -184,7 +207,7 @@ Save Container as Image:
 
 5. Save Image as Tar File
 
-	podman save -o	r do180/cc 
+	podman save -o	me.tar do180/cc 
 
 6. Test new Container with Tar File Image 
 
@@ -193,6 +216,10 @@ Save Container as Image:
 7. Push Image to Registry
 
 	podman push quay.io/do180/cc:v1.0
+
+Problem with Provious way:
+1. Reproducing Steps
+2. More op create more layers that increases size of Image
 
 
 Dockerfile/Containerfile
@@ -223,13 +250,6 @@ Download s2i from github or install package
 cd some_folder
 podman build -t image_name .
 
-1. Project
-2. Source Code
-3. Builder Image
-4. BuildConfig: Create image using above resources
-5. Builder: Push new image to OCP internal Registry
-6. Deployment: Pull new image from internal registry and start pod with new image
-7. Pod start runnin with new Image
 
 
 Buildah:
@@ -261,6 +281,20 @@ Project = namespace + additional features
 	Kubernetes			Openshift
 1.	Namespace			Project				
 
+
+
+Project:
+
+Pods for Openshift Management goes to Master Nodes:
+Pods for Application/Developers goes to Worker Nodes/Compute Nodes:
+
+1. Project
+2. Source Code
+3. Builder Image
+4. BuildConfig: Create image using above resources
+5. Builder: Push new image to OCP internal Registry
+6. Deployment: Pull new image from internal registry and start pod with new image
+7. Pod start runnin with new Image
 
 oc new-app --as-deployment-config --docker-image=registry.access.redhat.com/rhscl/mysql-57-rhel7:latest --name=mysql-openshift  -e MYSQL_USER=user1 -e MYSQL_PASSWORD=mypa55 -e MYSQL_DATABASE=testdb  -e MYSQL_ROOT_PASSWORD=r00tpa55
 
@@ -324,7 +358,7 @@ OR
 1.	Export/Create Template:
 oc get template mysql-ephemeral -n openshift -o yaml > export_template.yaml
 
-2.	Process Template with your Values:
+2.	Process Template with your Values(Fill the form with your values):
 oc process -f export_template.yaml -o yaml -p MYSQL_USER=user1 -p MYSQL_PASSWORD=mypa55 -p MYSQL_DATABASE=items > filled.yaml
 
 3.	Execute the processed Template/Create all resources mentioned in Template:
