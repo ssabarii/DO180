@@ -1,9 +1,18 @@
 
   Welcome to DO180
-	Red Hat OpenShift I: Containers & Kubernetes  			EX180	OCP 4.6
+	Red Hat OpenShift I: Containers & Kubernetes  			EX180	OCP 4.10
 	
 	
 
+Name:
+Org: If Possible
+Experience:
+		Be able to use a Linux terminal session and issue operating system commands. An RHCSA certification is recommended but not required.
+			vim cp mv  rm mkdir cd ssh 
+		Have experience with web application architectures and their corresponding technologies.
+Expectation:
+City/Timezone:
+Hobbies:
 
 
 
@@ -108,15 +117,16 @@ google ~2B
 Android Phones           Youtube,Map,Drive,Gmail,Crome (10 Services) 
 1 Container per service per user
 
+Natwest  10    2con died   start 2 automatically 
+
+
 Self-Mangement of Containers, orachestration
 Kubernetes is google contribution
 
 
-1000 containers 
-Cigna provides Health services
-9-12
-11Pm-5AM less 
-
+Openshift run Multiple Services:
+1. Pods/containers which helps running openshift cluster
+2. Pods/containers which helps running User/customer services
 
 	Chapter 2:
 	
@@ -186,7 +196,6 @@ Save Container as Image:
 4. Tag The Image
 	podman tag d591aa3a8577 quay.io/do180/cc:v1.0
 
-
 5. Save Image as Tar File
 
 	podman save -o	me.tar do180/cc 
@@ -199,16 +208,16 @@ Save Container as Image:
 
 	podman push quay.io/do180/cc:v1.0
 
-Problem with Provious way:
+Problem with Previous way:
 1. Reproducing Steps
 2. More op create more layers that increases size of Image
 
 
 Dockerfile/Containerfile
 
-		Add						copy 	
+		Add								copy 	
 1.		copy from working directory			copy from working directory
-		to image folder					to image folder
+		to image folder						to image folder
 2.		Download from internet				NA 
 		and put in image
 3.		tar file extract and copy contents		copy tar file as it is to image
@@ -218,7 +227,7 @@ dnf install docker-ce docker-ce-cli containerd.io
 
 https://github.com/openshift/source-to-image
 
-s2i (Source to Image) Developer(PHP Code)+compilation(Builder Image with PHP) = Application Image(which can be put on container)
+s2i (Source to Image) Developer(PHP Code) + compilation(Builder Image with PHP) = Application Image(which can be put on container)
 Build-config
 
 Download s2i from github or install package
@@ -262,8 +271,14 @@ Openshift is certified version of kubernetes
 Project = namespace + additional features
 	Kubernetes			Openshift
 1.	Namespace			Project				
+2. 	replicaset			Replication Controller		takes current state to desired state 
+3.	Deployment			DeploymentConfig
+4.  	Ingress				Route
 
 
+Difference Deployment and DeploymentConfig
+
+https://docs.openshift.com/container-platform/4.6/applications/deployments/what-deployments-are.html#deployments-comparing-deploymentconfigs_what-deployments-are
 
 Project:
 
@@ -353,11 +368,14 @@ oc delete all --all
 One step solution for deploying your complex application:
 Large Application eCommerce Amazon
 									ReplicationController/ReplicaSet
-										Deployment/
-		App_Image	ImageStream	Pods	Service		RC	DeploymentConfig	BuildConfig	Route 	
-Front End	I1(SC)		PHP7.3		40	1		1	1			1		1
-Service End	I2(SC)		Java EJB	20	1		1	1			1		0
-Database	I3		MYSQL(6.0)	10	1		1	1			0		0
+										
+			App_Image	ImageStream	Pods	Service		RC/ReplicaSet	secrets		Deployment/DeploymentConfig	BuildConfig	Route 	
+Front End		I1(S2I)		PHP7.3		40		1			1					2				1					1		1	
+Service End		I2(S2I)		Java EJB		20		1			1					2				1					1		0
+Database		I3		MYSQL(6.0)		10		1			1					4				1					0		0
+
+
+47+26+17= 90 Resources
 
 ReplicationController/ReplicaSet: Scaling of Pods from Current State to Desired State
 
