@@ -394,21 +394,9 @@ BC  php7.3~SOURCE_CODE
 
 	1 Step Solution app.yml (OpenShift Template)
 	oc create -f app.yml (82 objects)
+	
+oc port-forward pod-name 1111:8080 2222:3306
 
-RIVM:
-4 teams: Monolithic
-Nodejs
-php
-python
-java-ejb
-mysql
-
-microservice:
-Nodejs image
-php image
-python image
-java-ejb image
-mysql image
 
 
 oc create configmap db-config --from-literal=user_value=user1 --from-literal=db_value=items
