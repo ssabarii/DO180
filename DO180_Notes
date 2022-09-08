@@ -8,7 +8,7 @@ Name:
 Org: If Possible
 Experience:
 		Be able to use a Linux terminal session and issue operating system commands. An RHCSA certification is recommended but not required.
-			vim cp mv  rm mkdir cd ssh 
+			vi/vim cp mv  rm mkdir cd ssh 
 		Have experience with web application architectures and their corresponding technologies.
 Expectation:
 City/Timezone:
@@ -16,9 +16,9 @@ Hobbies:
 
 
 
+GMT-5           4 AM
 
-
-
+Vim		1 + 
 
 SDN Pods/Containers Services
 OCP has local image registry
@@ -42,7 +42,23 @@ OCP pull image from OCP internal registry and start your pods(container)
 Route is only OCP
 
 
+Image can only  run as ROOT
+	Host_User				Container			Container is a Process for HOST
+	Root					root					Process is running as root on HOST Dangerouus	
+	student					root					Process is running as student on HOST THIS IS OK  
 
+	root(any port)			root(any port)
+	student(> 1024)			root()
+
+APP NGINX(ROOT) in Container
+
+	## ROOT Containers
+	Host ROOT(< 1024)			Container ROOT
+	YES Hurt ME
+	
+	## RootLess Container
+	Host Student(<1024)		Container ROOT
+	NO NO NO
 
 Starting a container
 
@@ -210,7 +226,7 @@ Save Container as Image:
 
 Problem with Previous way:
 1. Reproducing Steps
-2. More op create more layers that increases size of Image
+2. More operation create more layers that increases size of Image
 
 
 Dockerfile/Containerfile
@@ -282,7 +298,7 @@ https://docs.openshift.com/container-platform/4.6/applications/deployments/what-
 
 Project:
 
-Pods for Openshift Management goes to Master Nodes:
+Pods for Openshift Management goes to Master Nodes/Control Node/Control Plane:
 Pods for Application/Developers goes to Worker Nodes/Compute Nodes:
 
 1. Project
@@ -370,9 +386,9 @@ Large Application eCommerce Amazon
 									ReplicationController/ReplicaSet
 										
 			App_Image	ImageStream	Pods	Service		RC/ReplicaSet	secrets		Deployment/DeploymentConfig	BuildConfig	Route 	
-Front End		I1(S2I)		PHP7.3		40		1			1					2				1					1		1	
-Service End		I2(S2I)		Java EJB		20		1			1					2				1					1		0
-Database		I3		MYSQL(6.0)		10		1			1					4				1					0		0
+Front End		I1(S2I)		PHP7.3		40		1			1					2				1							1		1	
+Service End		I2(S2I)		Java EJB		20		1			1					2				1							1		0
+Database		I3		MYSQL(6.0)		10		1			1					4				1							0		0
 
 
 47+26+17= 90 Resources
